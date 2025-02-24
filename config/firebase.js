@@ -1,0 +1,1 @@
+// configuración de firebase. Deberá inicializar la conexión con firebase.

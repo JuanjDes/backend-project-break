@@ -1,0 +1,1 @@
+//  lógica para manejar las solicitudes de autenticación. Devolverá las respuestas en formato HTML.
