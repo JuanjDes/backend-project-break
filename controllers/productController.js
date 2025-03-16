@@ -18,7 +18,11 @@ const baseHtml = `
 const getNavBar = (isDashboard = false) => `
   <nav>
     <a href="/products">Productos</a>
-    <a href="/dashboard">Dashboard</a>
+    <a href="/products/camisetas">Camisetas</a>
+    <a href="/products/pantalones">Pantalones</a>
+    <a href="/products/zapatos">Zapatos</a>
+    <a href="/products/accesorios">Accesorios</a>
+    <a href="/dashboard">Login</a>
     ${isDashboard ? '<a href="/dashboard/new">Nuevo Producto</a>' : ''}
   </nav>
 `;
@@ -43,6 +47,7 @@ const getProductCards = (products, isDashboard = false) => {
   return html;
 };
 
+// Función para mostrar todos los productos
 const showProducts = async (req, res) => {
   const products = await Product.find();
   const isDashboard = req.path === '/dashboard';
@@ -53,6 +58,68 @@ const showProducts = async (req, res) => {
   res.send(html);
 };
 
+
+// Función para mostrar solo camisetas
+const showCamisetas = async (req, res) => {
+  const camisetas = await Product.find({ category: 'Camisetas' });
+  const productCards = getProductCards(camisetas, false); // No es dashboard, así que false
+  const html = `
+    ${baseHtml}
+    ${getNavBar()}
+    <div class = "tituloProducto">Camisetas</div>
+    ${productCards}
+    </body></html>
+  `;
+  res.send(html);
+};
+
+
+// Función para mostrar solo pantalones
+const showPantalones = async (req, res) => {
+  const pantalones = await Product.find({ category: 'Pantalones' });
+  const productCards = getProductCards(pantalones, false); // No es dashboard, así que false
+  const html = `
+    ${baseHtml}
+    ${getNavBar()}
+    <div class = "tituloProducto">Pantalones</div>
+    ${productCards}
+    </body></html>
+  `;
+  res.send(html);
+};
+
+
+// Función para mostrar solo zapatos
+const showZapatos = async (req, res) => {
+  const zapatos = await Product.find({ category: 'Zapatos' });
+  const productCards = getProductCards(zapatos, false); // No es dashboard, así que false
+  const html = `
+    ${baseHtml}
+    ${getNavBar()}
+    <div class = "tituloProducto">Zapatos</div>
+    ${productCards}
+    </body></html>
+  `;
+  res.send(html);
+};
+
+
+// Función para mostrar solo accesorios
+const showAccesorios = async (req, res) => {
+  const accesorios = await Product.find({ category: 'Accesorios' });
+  const productCards = getProductCards(accesorios, false); // No es dashboard, así que false
+  const html = `
+    ${baseHtml}
+    ${getNavBar()}
+    <div class = "tituloProducto">Accesorios</div>
+    ${productCards}
+    </body></html>
+  `;
+  res.send(html);
+};
+
+
+// Función para mostrar productos por ID
 const showProductById = async (req, res) => {
   const product = await Product.findById(req.params.productId);
   if (!product) return res.send('Producto no encontrado');
@@ -75,6 +142,8 @@ const showProductById = async (req, res) => {
   res.send(html);
 };
 
+
+// Formulario para crear un nuevo producto
 const showNewProduct = (req, res) => {
   const html = `
     ${baseHtml}
@@ -117,6 +186,8 @@ const showNewProduct = (req, res) => {
   res.send(html);
 };
 
+
+// Función que crea el producto nuevo
 const createProduct = async (req, res) => {
   const { name, description, image, category, size, price } = req.body;
   const product = new Product({ name, description, image, category, size, price });
@@ -124,6 +195,8 @@ const createProduct = async (req, res) => {
   res.redirect('/dashboard');
 };
 
+
+// Formulario para editar un producto
 const showEditProduct = async (req, res) => {
   const product = await Product.findById(req.params.productId);
   if (!product) return res.send('Producto no encontrado');
@@ -160,17 +233,23 @@ const showEditProduct = async (req, res) => {
   res.send(html);
 };
 
+
+// Función que actualiza el producto editado
 const updateProduct = async (req, res) => {
   const { name, description, image, category, size, price } = req.body;
   await Product.findByIdAndUpdate(req.params.productId, { name, description, image, category, size, price });
   res.redirect('/dashboard');
 };
 
+
+// Función para borrar un producto
 const deleteProduct = async (req, res) => {
   await Product.findByIdAndDelete(req.params.productId);
   res.redirect('/dashboard');
 };
 
+
+// Exportamos todos los modulos o funciones
 module.exports = {
   showProducts,
   showProductById,
@@ -179,4 +258,8 @@ module.exports = {
   showEditProduct,
   updateProduct,
   deleteProduct,
+  showCamisetas,
+  showPantalones,
+  showZapatos,
+  showAccesorios,
 };

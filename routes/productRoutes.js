@@ -12,10 +12,18 @@ const {
   showEditProduct,
   updateProduct,
   deleteProduct,
+  showCamisetas,
+  showPantalones,
+  showZapatos,
+  showAccesorios,
 } = require('../controllers/productController');
 
 // Rutas para la tienda
 router.get('/products', showProducts);
+router.get('/products/camisetas', showCamisetas);
+router.get('/products/pantalones', showPantalones);
+router.get('/products/zapatos', showZapatos);
+router.get('/products/accesorios', showAccesorios);
 router.get('/products/:productId', showProductById);
 
 // Rutas para el dashboard
